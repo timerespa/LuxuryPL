@@ -1,4 +1,4 @@
-const initialRespTime = '14:00:00'; // Ustaw początkową godzinę pierwszego respu (format HH:MM:SS)
+const initialRespTime = '16:16:05'; // Ustaw początkową godzinę pierwszego respu (format HH:MM:SS)
 const respInterval = 3750; // Interwał między respami w sekundach (1 godzina, 2 minuty i 30 sekund)
 
 document.addEventListener('DOMContentLoaded', () => {
