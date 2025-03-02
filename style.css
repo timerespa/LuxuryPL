@@ -1,56 +1,57 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
-    text-align: center;
-    margin: 0;
+    background-color: #f0f0f0;
+    color: #333;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
 }
 
-.countdown-container {
-    background: rgba(0, 0, 0, 0.8);
+.container {
+    text-align: center;
+    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
-#countdown {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 24px;
+.timer, .next-resp {
+    font-size: 2em;
+    margin: 10px 0;
 }
 
-.time-box {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
+.toggle-resp-list {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
     border-radius: 5px;
-    min-width: 70px;
+    margin: 20px 0;
 }
 
-span {
-    font-size: 32px;
-    font-weight: bold;
+.toggle-resp-list:hover {
+    background-color: #0056b3;
 }
 
-input {
-    margin-top: 15px;
-    padding: 5px;
-    font-size: 16px;
+.resp-list {
+    list-style-type: none;
+    padding: 0;
+    display: none;
 }
 
-/* Stylizacja stopki */
+.resp-list li {
+    margin: 5px 0;
+}
+
 footer {
     margin-top: 20px;
-    font-size: 14px;
-    color: #bbb;
+    font-size: 0.9em;
+    color: #666;
 }
