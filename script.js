@@ -1,35 +1,66 @@
-	// Ustawienie domyślnej daty końcowej
-		let countdownDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).getTime(); 
+const initialRespTime = '14:00:00'; // Ustaw początkową godzinę pierwszego respu (format HH:MM:SS)
+const respInterval = 3750; // Interwał między respami w sekundach (1 godzina, 2 minuty i 30 sekund)
 
-// Aktualizacja zegara co sekundę
-function updateCountdown() {
-    let now = new Date().getTime();
-    let timeLeft = countdownDate - now;
+document.addEventListener('DOMContentLoaded', () => {
+    const timerElement = document.getElementById('timer');
+    const nextRespElement = document.getElementById('next-resp');
+    const respListElement = document.getElementById('resp-list');
+    const toggleRespListButton = document.getElementById('toggle-resp-list');
 
-    if (timeLeft > 0) {
-        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    let nextRespTime = calculateNextRespTime();
 
-        document.getElementById("days").innerText = days.toString().padStart(2, '0');
-        document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-        document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-        document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
-    } else {
-        document.getElementById("countdown").innerHTML = "<h2>Czas minął!</h2>";
+    function calculateNextRespTime() {
+        const now = new Date();
+        const [hours, minutes, seconds] = initialRespTime.split(':').map(Number);
+        let respTime = new Date(now);
+        respTime.setHours(hours, minutes, seconds, 0);
+
+        while (respTime <= now) {
+            respTime = new Date(respTime.getTime() + respInterval * 1000);
+        }
+
+        return respTime;
     }
-}
 
-// Obsługa zmiany daty wprowadzonej przez użytkownika
-document.getElementById("datetime-input").addEventListener("change", function () {
-    let newDate = new Date(this.value).getTime();
-    if (!isNaN(newDate)) {
-        countdownDate = newDate;
-        updateCountdown();
+    function updateTimer() {
+        const now = new Date();
+        const timeDiff = nextRespTime - now;
+
+        if (timeDiff <= 0) {
+            nextRespTime = calculateNextRespTime();
+        }
+
+        const hours = String(Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        const minutes = String(Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        const seconds = String(Math.floor((timeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+
+        timerElement.textContent = `${hours}:${minutes}:${seconds}`;
+        nextRespElement.textContent = `Następny resp: ${nextRespTime.toLocaleTimeString('pl-PL')}`;
     }
+
+    function generateRespList() {
+        respListElement.innerHTML = '';
+        let respTime = new Date(nextRespTime);
+
+        for (let i = 0; i < 12; i++) {
+            const listItem = document.createElement('li');
+            listItem.textContent = respTime.toLocaleTimeString('pl-PL');
+            respListElement.appendChild(listItem);
+            respTime = new Date(respTime.getTime() + respInterval * 1000);
+        }
+    }
+
+    toggleRespListButton.addEventListener('click', () => {
+        if (respListElement.style.display === 'none' || respListElement.style.display === '') {
+            generateRespList();
+            respListElement.style.display = 'block';
+            toggleRespListButton.textContent = 'Ukryj listę respów';
+        } else {
+            respListElement.style.display = 'none';
+            toggleRespListButton.textContent = 'Kolejne 12 respów';
+        }
+    });
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
 });
-
-// Uruchomienie zegara
-setInterval(updateCountdown, 1000);
-updateCountdown();
