@@ -53,7 +53,7 @@
     <script>
         // Czas trwania cyklu (1 godzina, 2 minuty, 30 sekund) = 3750 sekund
         const cycleTime = 3750;
-        let startTime = Math.floor(Date.now() / 1000); // Aktualny czas w sekundach
+        let startTime = Math.floor(new Date("2025-03-02T15:15:00").getTime() / 1000);// Aktualny czas w sekundach
 
         function updateTimer() {
             let now = Math.floor(Date.now() / 1000);
