@@ -3,79 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Respawn Timer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 32px;
-        }
-
-        .timer-box {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-            width: 250px;
-            margin: 20px auto;
-        }
-
-        .timer-box h2 {
-            margin: 0;
-            font-size: 18px;
-            color: #ffcc00;
-        }
-
-        .timer {
-            font-size: 30px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #ff6666;
-        }
-    </style>
+    <title>Odliczanie Czasu</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="countdown-container">
+        <h1>Odliczanie do wydarzenia</h1>
+        <div id="countdown">
+            <div class="time-box"><span id="days">00</span><p>Dni</p></div>
+            <div class="time-box"><span id="hours">00</span><p>Godzin</p></div>
+            <div class="time-box"><span id="minutes">00</span><p>Minut</p></div>
+            <div class="time-box"><span id="seconds">00</span><p>Sekund</p></div>
+        </div>
+        <p>Ustaw nową datę: <input type="datetime-local" id="datetime-input"></p>
+    </div>
 
-    <h1>Respawn Timer</h1>
+    <footer>
+        <p>Strona stworzona przez <strong>LuxuryPL</strong></p>
+    </footer>
 
-    <div id="timers-container"></div>
-
-    <script>
-        // Czas trwania cyklu (1 godzina, 2 minuty, 30 sekund) = 3750 sekund
-        const cycleTime = 3750;
-        let startTime = Math.floor(Date.now() / 1000); // Aktualny czas w sekundach
-        const timerCount = 5; // Liczba zegarów do wyświetlenia
-        
-        const timersContainer = document.getElementById("timers-container");
-
-        for (let i = 0; i < timerCount; i++) {
-            let timerBox = document.createElement("div");
-            timerBox.classList.add("timer-box");
-            timerBox.innerHTML = `<h2>Respawn ${i + 1}</h2><div class="timer" id="timer${i}">Ładowanie...</div>`;
-            timersContainer.appendChild(timerBox);
-        }
-
-        function updateTimers() {
-            let now = Math.floor(Date.now() / 1000);
-
-            for (let i = 0; i < timerCount; i++) {
-                let elapsedTime = (now - startTime) % cycleTime;
-                let timeLeft = cycleTime - elapsedTime + (i * cycleTime);
-
-                let hours = Math.floor(timeLeft / 3600);
-                let minutes = Math.floor((timeLeft % 3600) / 60);
-                let seconds = timeLeft % 60;
-
-                document.getElementById(`timer${i}`).innerText =
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-        }
-
-        set
+    <script src="script.js"></script>
+</body>
+</html>
