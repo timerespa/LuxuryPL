@@ -1,66 +1,62 @@
-const initialRespTime = '16:16:05'; // Ustaw początkową godzinę pierwszego respu (format HH:MM:SS)
-const respInterval = 3750; // Interwał między respami w sekundach (1 godzina, 2 minuty i 30 sekund)
+document.addEventListener("DOMContentLoaded", function () {
+    const timerElement = document.getElementById("timer");
+    const nextRespElement = document.getElementById("nextResp");
+    const respList = document.getElementById("respList");
+    const toggleListButton = document.getElementById("toggleList");
 
-document.addEventListener('DOMContentLoaded', () => {
-    const timerElement = document.getElementById('timer');
-    const nextRespElement = document.getElementById('next-resp');
-    const respListElement = document.getElementById('resp-list');
-    const toggleRespListButton = document.getElementById('toggle-resp-list');
+    // Nowa konfiguracja początkowego czasu pierwszego respa
+    let baseTime = new Date();
+    baseTime.setHours(20, 50, 55, 0); // Poprawiona startowa godzina
 
-    let nextRespTime = calculateNextRespTime();
+    const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
-    function calculateNextRespTime() {
-        const now = new Date();
-        const [hours, minutes, seconds] = initialRespTime.split(':').map(Number);
-        let respTime = new Date(now);
-        respTime.setHours(hours, minutes, seconds, 0);
+    function getNextRespTime() {
+        let now = new Date();
+        let nextResp = new Date(baseTime.getTime());
 
-        while (respTime <= now) {
-            respTime = new Date(respTime.getTime() + respInterval * 1000);
+        while (nextResp <= now) {
+            nextResp = new Date(nextResp.getTime() + interval);
         }
 
-        return respTime;
+        return nextResp;
     }
 
     function updateTimer() {
-        const now = new Date();
-        const timeDiff = nextRespTime - now;
+        let nextResp = getNextRespTime();
+        let now = new Date();
+        let timeDiff = nextResp - now;
 
-        if (timeDiff <= 0) {
-            nextRespTime = calculateNextRespTime();
+        let hours = Math.floor(timeDiff / (1000 * 60 * 60));
+        let minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
+
+        if (timeDiff <= 1000) {
+            updateRespList();
         }
-
-        const hours = String(Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        const minutes = String(Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const seconds = String(Math.floor((timeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
-
-        timerElement.textContent = `${hours}:${minutes}:${seconds}`;
-        nextRespElement.textContent = `Następny resp: ${nextRespTime.toLocaleTimeString('pl-PL')}`;
     }
 
-    function generateRespList() {
-        respListElement.innerHTML = '';
-        let respTime = new Date(nextRespTime);
+    function updateRespList() {
+        respList.innerHTML = "";
+        let nextResp = getNextRespTime();
+        let nextAfterThis = new Date(nextResp.getTime() + interval); // Pominięcie odliczanego respa
 
         for (let i = 0; i < 12; i++) {
-            const listItem = document.createElement('li');
-            listItem.textContent = respTime.toLocaleTimeString('pl-PL');
-            respListElement.appendChild(listItem);
-            respTime = new Date(respTime.getTime() + respInterval * 1000);
+            let respTime = new Date(nextAfterThis.getTime() + i * interval);
+            let formattedTime = respTime.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            let listItem = document.createElement("li");
+            listItem.textContent = formattedTime;
+            respList.appendChild(listItem);
         }
+
+        nextRespElement.textContent = nextResp.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     }
 
-    toggleRespListButton.addEventListener('click', () => {
-        if (respListElement.style.display === 'none' || respListElement.style.display === '') {
-            generateRespList();
-            respListElement.style.display = 'block';
-            toggleRespListButton.textContent = 'Ukryj listę respów';
-        } else {
-            respListElement.style.display = 'none';
-            toggleRespListButton.textContent = 'Kolejne 12 respów';
-        }
+    toggleListButton.addEventListener("click", function () {
+        respList.classList.toggle("hidden");
     });
 
+    updateRespList();
     setInterval(updateTimer, 1000);
-    updateTimer();
 });
