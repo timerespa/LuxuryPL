@@ -1,57 +1,59 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    text-align: center;
+    background: linear-gradient(135deg, #1e1e2f, #3a3a6e);
+    color: white;
     margin: 0;
+    padding: 20px;
 }
 
 .container {
-    text-align: center;
-    background-color: #fff;
+    max-width: 500px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
 }
 
 h1 {
+    font-size: 24px;
+}
+
+.timer {
+    font-size: 36px;
+    font-weight: bold;
     margin: 20px 0;
+    color: #ffcc00;
 }
 
-.timer, .next-resp {
-    font-size: 2em;
-    margin: 10px 0;
-}
-
-.toggle-resp-list {
-    background-color: #007bff;
-    color: #fff;
+button {
+    background: #ffcc00;
+    color: black;
+    font-size: 16px;
     border: none;
-    padding: 10px 20px;
+    padding: 10px;
+    margin: 10px;
     cursor: pointer;
     border-radius: 5px;
-    margin: 20px 0;
 }
 
-.toggle-resp-list:hover {
-    background-color: #0056b3;
+button:hover {
+    background: #e6b800;
 }
 
-.resp-list {
-    list-style-type: none;
-    padding: 0;
+.hidden {
     display: none;
 }
 
-.resp-list li {
-    margin: 5px 0;
+ul {
+    list-style: none;
+    padding: 0;
 }
 
-footer {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #666;
+li {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
 }
